@@ -1,0 +1,1 @@
+package fr.utbm.gl52.netbusmanager.view;
