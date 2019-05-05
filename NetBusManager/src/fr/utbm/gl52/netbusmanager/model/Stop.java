@@ -10,9 +10,22 @@ package fr.utbm.gl52.netbusmanager.model;
 public class Stop {
 
 	private String name;
+	
+	// A CHANGER POUR FAIRE UNE CLASSE ADRESSE JE PENSE
+	private String address;
 	private Double latitude;
 	private Double longitude;
 	
+	
+	
+	
+	public Stop(String name, Double latitude, Double longitude) {
+		super();
+		this.name = name;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+
 	/**
 	 * @return the name
 	 */
@@ -54,5 +67,29 @@ public class Stop {
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
+	
+	
+	
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	@Override
+	public String toString() {
+		return new String(this.name+" "+this.latitude+" "+this.longitude);
+		
+	}
+	
+	
 	
 }

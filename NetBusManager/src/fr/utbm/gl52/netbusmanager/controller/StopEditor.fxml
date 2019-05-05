@@ -2,8 +2,58 @@
 
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml/1">
-	<Button text="test"></Button>
+<GridPane fx:id="root" fx:controller="fr.utbm.gl52.netbusmanager.controller.StopEditorController" xmlns:fx="http://javafx.com/fxml/1" >
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+		<Button fx:id="addStopButton" text="Ajouter un arrêt" alignment="TOP_LEFT"  onAction="#openAddConfigurationMenu"></Button>
+		<Button fx:id="modifyStopButton" text="Modifier un arrêt existant" onAction="#openModifyConfigurationMenu" ></Button>
+	</VBox>
+
+
+	<!-- Composants pour l'ajout de nouveaux arrêts -->
+	<VBox fx:id="addStopVBox" GridPane.columnIndex="1" GridPane.rowIndex="0" visible="false">
+		<Label text="Ajouter un arrêt dans la base de données de l'application"></Label>
+		<Label text="Les champs portant le signe (*) sont obligatoires"></Label>
+		<GridPane hgap="5">
+			<VBox GridPane.columnIndex="0" GridPane.rowIndex="0" >
+				<Label text="Nom de l'arrêt (*)"></Label>
+				<TextField fx:id="stopNameTextField"></TextField>
+			</VBox>
+			<VBox GridPane.columnIndex="1" GridPane.rowIndex="0" >
+				<Label text="Longitude (*) :"></Label>
+				<TextField fx:id="longitudeTextField"></TextField>
+			</VBox>
+				<VBox GridPane.columnIndex="2" GridPane.rowIndex="0" >
+				<Label text="Lattitude (*) :"></Label>
+				<TextField fx:id="lattitudeTextField"></TextField>
+			</VBox>
+			<VBox GridPane.columnIndex="0" GridPane.rowIndex="1" >
+				<Label text="Adresse : "></Label>
+				<TextField fx:id="adressTextField"></TextField>
+			</VBox>
+			<VBox GridPane.columnIndex="1" GridPane.rowIndex="1" >
+				<Label text="Commune : "></Label>
+				<ComboBox fx:id="communeComboBox">
+				</ComboBox>
+			</VBox>
+			<Button fx:id="validateButton" onAction="#addStopToDataBase" text="Ajouter l'arrêt" GridPane.columnIndex="3" GridPane.rowIndex="2" ></Button>
+			<Label fx:id="informationAddLabel" style="-fx-text-fill:red" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" ></Label>
+			
+		</GridPane>
+	</VBox>
+	
+	
+	
+	<VBox fx:id="modifyStopVBox" GridPane.columnIndex="1" GridPane.rowIndex="0" visible="false">
+		<Label text="Choisissez l'arrêt que vous souhaitez modifier"></Label>
+		<ComboBox fx:id="modifyComboBox"></ComboBox>
+		<VBox alignment="BOTTOM_RIGHT">
+			<Button fx:id="modifyButton" onAction="#modifySelectedStop" text="Modifier l'arrêt"></Button>
+		</VBox>
+	</VBox>
 </GridPane>
 

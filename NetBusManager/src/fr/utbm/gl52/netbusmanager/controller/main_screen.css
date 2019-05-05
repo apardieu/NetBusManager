@@ -9,3 +9,7 @@
 .mainscreen_button {
 
 }
+
+.redLabel{
+	-fx-text-fill:red;
+}
