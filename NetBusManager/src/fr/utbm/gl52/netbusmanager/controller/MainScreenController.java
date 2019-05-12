@@ -2,6 +2,7 @@ package fr.utbm.gl52.netbusmanager.controller;
 
 import java.io.IOException;
 
+import fr.utbm.gl52.netbusmanager.view.ScheduleEditorView;
 import fr.utbm.gl52.netbusmanager.view.StopEditorView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +22,7 @@ public class MainScreenController {
 	@FXML
 	private Button editeurRouteButton;
 	@FXML
-	private Button editeurtmButton;
+	private Button editeurScheduleButton;
 	
 
 	@FXML
@@ -50,7 +51,14 @@ public class MainScreenController {
 	}
 	
 	@FXML
-	public void openEditeurTm() {
+	public void openScheduleEditor() {
+		
+		try {
+			App.getStage().setScene(new ScheduleEditorView(FXMLLoader.load(getClass().getResource("ScheduleEditor.fxml"))));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}

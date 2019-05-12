@@ -15,9 +15,14 @@ public class App extends Application {
 //	}
 	
     private static Stage guiStage;
+    private static Scene mainScene;
 
     public static Stage getStage() {
         return guiStage;
+    }
+    
+    public static Scene getMainScene() {
+    	return mainScene;
     }
     
     public static void main(String[] args) {
@@ -30,6 +35,7 @@ public class App extends Application {
 		primaryStage.setTitle("NetBusManager");
 		Parent root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
 		Scene mainScreen = new MainScreenView(root);
+		mainScene = mainScreen;
 		
         primaryStage.setScene(mainScreen);
         primaryStage.show();

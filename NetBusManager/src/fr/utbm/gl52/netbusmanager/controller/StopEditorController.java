@@ -29,6 +29,8 @@ public class StopEditorController {
 	private Button addStopButton;
 	@FXML
 	private Button modifyStopButton;
+	@FXML
+	private Button homeButton;
 	
 	
 	/*Élements graphiques lors de l'ajout d'un arrêt*/
@@ -237,6 +239,6 @@ public class StopEditorController {
 	
 	@FXML
 	public void goBackToMainScreen() {
-		
+		App.getStage().setScene(App.getMainScene());
 	}
 }

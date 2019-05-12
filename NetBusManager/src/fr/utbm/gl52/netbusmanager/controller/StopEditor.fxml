@@ -11,6 +11,7 @@
 	<VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
 		<Button fx:id="addStopButton" text="Ajouter un arrêt" alignment="TOP_LEFT"  onAction="#openAddConfigurationMenu"></Button>
 		<Button fx:id="modifyStopButton" text="Modifier un arrêt existant" onAction="#openModifyConfigurationMenu" ></Button>
+		<Button fx:id="homeButton" text="Menu principal" onAction="#goBackToMainScreen"></Button>
 	</VBox>
 
 
