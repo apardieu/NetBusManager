@@ -1,7 +1,9 @@
 package fr.utbm.gl52.netbusmanager.controller;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
+import fr.utbm.gl52.netbusmanager.dao.StopDao;
 import fr.utbm.gl52.netbusmanager.model.Stop;
 import fr.utbm.gl52.netbusmanager.model.StopEditor;
 import javafx.event.ActionEvent;
@@ -92,13 +94,27 @@ public class StopEditorController {
 				lattitudeTextField.setStyle("-fx-border-color : red");
 		}
 		else {
-			Stop newStop = new Stop(stopNameTextField.getText(),Double.parseDouble(longitudeTextField.getText()),Double.parseDouble(lattitudeTextField.getText()));
+			//Création d'un nouvel arrêt avec les valeurs de tous les champs
+			Stop newStop = new Stop(stopNameTextField.getText(),Double.parseDouble(longitudeTextField.getText()),Double.parseDouble(lattitudeTextField.getText()),adressTextField.getText());
 			if(model.isStopAlreadyExisting(newStop)&&this.stopToModify==null) {
 				this.informationAddLabel.setText("Un arrêt portant le même nom ou se situant à la même position, existe déjà");
 				this.informationAddLabel.setVisible(true);
 			}
 			else {
-				this.model.getAvailableStopList().add(newStop);
+				/*AJOUT*/
+				//Ajout d'arrêt dans la base de donnée
+				StopDao stopDao = new StopDao();
+				
+		        if(stopDao.save(newStop)) {
+		        		System.out.println("l'arret ajouté avec succes");
+		        }
+				
+				//verification de l'insertion 
+				for (Stop stop: stopDao.getAll()) {
+	        		System.out.println(stop);
+	        	}
+				
+				//this.model.getAvailableStopList().add(newStop);
 
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				
@@ -108,44 +124,61 @@ public class StopEditorController {
 				alert.getButtonTypes().setAll(closeAddStopButtonType, mainScreenButtonType);
 				
 				Optional<ButtonType> result;
-
+				
+				//Actualisation de la liste
+				this.model = new StopEditor();
 				
 				if(this.stopToModify==null) {
-				alert.setTitle("Ajout de l'arrêt réussi");
-				alert.setHeaderText("Ajout de l'arrêt réussi");
-				alert.setContentText("L'arrêt : "+newStop.toString()+" a bien été ajouté à la base de données de l'application ");
-
-				ButtonType addNewStopButtonType = new ButtonType("Ajouter un nouvel arrêt",ButtonData.CANCEL_CLOSE);
-
-				alert.getButtonTypes().add(0,addNewStopButtonType);
-				
-				 result = alert.showAndWait();
-				if(result.get()==addNewStopButtonType) {
-					this.clearAddStopField();
-				}
+					
+					//Affichage du méssage de confirmation sur la fenêtre
+					alert.setTitle("Ajout de l'arrêt réussi");
+					alert.setHeaderText("Ajout de l'arrêt réussi");
+					alert.setContentText("L'arrêt : "+newStop.getName()+" a bien été ajouté à la base de données de l'application ");
+	
+					ButtonType addNewStopButtonType = new ButtonType("Ajouter un nouvel arrêt",ButtonData.CANCEL_CLOSE);
+	
+					alert.getButtonTypes().add(0,addNewStopButtonType);
+					
+					 result = alert.showAndWait();
+					if(result.get()==addNewStopButtonType) {
+						this.clearAddStopField();
+						
+					}
 
 				}else {
+				
+					//MODIFICATION
 					alert.setTitle("Modification de l'arrêt réussie");
 					alert.setHeaderText("Modification de l'arrêt réussie");
 					alert.setContentText("L'arrêt : "+stopToModify.toString()+" a bien été modifié.");
 					
+					/*Ajouter le code pour la modification dans la base de donnée*/
 					
-					this.model.getAvailableStopList().remove(this.model.getStopFromName(this.stopToModify.getName()));
+					/*if(stopDao.update(stopToModify)) {
+			        		System.out.println("l'arret ajouté avec succes");
+			        }
+					
+					//verification de l'insertion 
+					for (Stop stop: stopDao.getAll()) {
+		        		System.out.println(stop);
+		        	}*/
+					
+					
+					//this.model.getAvailableStopList().remove(this.model.getStopFromName(this.stopToModify.getName()));
 					result = alert.showAndWait();
 
 					
 				}
+				
+				
 				if(result.get()==closeAddStopButtonType) {
 					this.clearAddStopField();
 					this.addStopButton.fire();
 				}
 				if(result.get()==mainScreenButtonType) {
-					
 					this.goBackToMainScreen();
-					
 				}
 
-				
 			}
 
 		}
@@ -204,9 +237,21 @@ public class StopEditorController {
 	//Pas bien faudrait faire une seule fonction pour remplir les deux combobox mais on verra plus tard
 	@FXML
 	public void fillModifyComboBox(ActionEvent e) {
+		ArrayList<Stop> lis =  this.model.getAvailableStopList();
+		
+		//Si la liste est vierege on copie tout les éléments de la base
 		if(modifyComboBox.getItems().isEmpty()) {
 			for(Stop s : this.model.getAvailableStopList())
 				modifyComboBox.getItems().add(s.getName());
+		}
+		else {
+			// Dès qu'il y a un nouvel élément qui sajoute à la base on raffraichie la liste
+			if(modifyComboBox.getItems().size() != lis.size()) {
+				modifyComboBox = new ComboBox<String>();
+				
+				for(Stop s : this.model.getAvailableStopList())
+					modifyComboBox.getItems().add(s.getName());
+			}
 		}
 	}
 	

@@ -2,6 +2,8 @@ package fr.utbm.gl52.netbusmanager.model;
 
 import java.util.ArrayList;
 
+import fr.utbm.gl52.netbusmanager.dao.StopDao;
+
 public class StopEditor {
 	
 	
@@ -13,10 +15,19 @@ public class StopEditor {
 	
 	
 	public StopEditor() {
+		StopDao stopDao = new StopDao();
+		
 		this.availableStopList = new ArrayList<Stop>();
-		this.availableStopList.add(new Stop("Savoureuse",0.0,0.0));
+		
+		//Initialisation des données d'arrêts avec celles de la base
+		StopDao StopList = new StopDao();
+        for (Stop stopDetail: stopDao.getAll()) {
+        	this.availableStopList.add(stopDetail);
+        }
+     
+		/*this.availableStopList.add(new Stop("Savoureuse",0.0,0.0));
 		this.availableStopList.add(new Stop("Chemin des cuicuis",5.0,5.0));
-		this.availableStopList.add(new Stop("Foret enchantee",10.0,10.0));	
+		this.availableStopList.add(new Stop("Foret enchantee",10.0,10.0));	*/
 		
 		this.availableCitiesList = new ArrayList<String>();
 		this.availableCitiesList.add("Belfort");

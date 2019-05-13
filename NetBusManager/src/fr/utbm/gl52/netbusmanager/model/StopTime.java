@@ -24,7 +24,7 @@ import javax.persistence.TemporalType;
 public class StopTime implements Serializable {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@ManyToOne

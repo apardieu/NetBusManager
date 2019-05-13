@@ -1,4 +1,6 @@
 package fr.utbm.gl52.netbusmanager.controller;
+import fr.utbm.gl52.netbusmanager.dao.StopDao;
+import fr.utbm.gl52.netbusmanager.model.Stop;
 import fr.utbm.gl52.netbusmanager.view.MainScreenView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +35,16 @@ public class App extends Application {
 		
         primaryStage.setScene(mainScreen);
         primaryStage.show();
-		
+		/*
+        StopDao stopDao = new StopDao();
+        
+        if(stopDao.save(new Stop("name",0.52, 12.3,"address"))) {
+        	for (Stop stop: stopDao.getAll()) {
+        		System.out.println("good");
+        	}
+        }*/
+        
+        
 		
 	}
 

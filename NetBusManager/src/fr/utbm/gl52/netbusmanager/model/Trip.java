@@ -21,7 +21,7 @@ import javax.persistence.ManyToOne;
 public class Trip implements Serializable {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@ManyToOne
