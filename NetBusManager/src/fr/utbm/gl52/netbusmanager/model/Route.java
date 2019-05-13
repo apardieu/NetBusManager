@@ -3,14 +3,38 @@
  */
 package fr.utbm.gl52.netbusmanager.model;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * @author dbissari
  *
  */
-public class Route {
+@Entity
+public class Route implements Serializable {
 	
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
+	@Column(nullable = false)
 	private String description;
+	
+	public Route() {
+		
+	}
+	
+	/**
+	 * @param description the description
+	 */
+	public Route(String description) {
+		this.description = description;
+	}
 	
 	/**
 	 * @return the id
@@ -38,6 +62,11 @@ public class Route {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return "Route [id=" + id + ", description=" + description + "]";
 	}
 	
 }
