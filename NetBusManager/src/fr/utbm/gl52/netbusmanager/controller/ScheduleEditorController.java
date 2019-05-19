@@ -5,6 +5,7 @@ package fr.utbm.gl52.netbusmanager.controller;
 
 import fr.utbm.gl52.netbusmanager.model.Line;
 import fr.utbm.gl52.netbusmanager.model.Stop;
+import fr.utbm.gl52.netbusmanager.view.horaires.AutomaticHorairesLine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -90,6 +91,8 @@ public class ScheduleEditorController {
 	
 	@FXML
 	public void onModifyButtonPressed(ActionEvent e){
+		this.chooseVBox.setVisible(false);
+		this.root.add(new AutomaticHorairesLine(), 1, 0);
 		
 	}
 
