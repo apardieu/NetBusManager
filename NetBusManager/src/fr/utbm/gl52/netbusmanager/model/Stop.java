@@ -3,28 +3,76 @@
  */
 package fr.utbm.gl52.netbusmanager.model;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * @author dbissari
  *
  */
-public class Stop {
+@Entity
+public class Stop implements Serializable {
 
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@Column(nullable = false)
 	private String name;
 	
-	// A CHANGER POUR FAIRE UNE CLASSE ADRESSE JE PENSE
+	@Column(nullable = false)
 	private String address;
+	
+	@Column(nullable = false)
 	private Double latitude;
+	
+	@Column(nullable = false)
 	private Double longitude;
 	
+	public Stop() {
+		
+	}
 	
-	
-	
+	/**
+	 * @param name the name
+	 * @param latitude the latitude
+	 * @param longitude the longitude
+	 */
 	public Stop(String name, Double latitude, Double longitude) {
-		super();
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
+	
+	/**
+	 * @param name the name
+	 * @param latitude the latitude
+	 * @param longitude the longitude
+	 * @param address the address
+	 */
+	public Stop(String name, Double latitude, Double longitude, String address) {
+		this(name, latitude, longitude);
+		this.address = address;
+	}
+
+	/**
+	 * @return the id
+	 */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+	 * @param id the id to set
+	 */
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
 	/**
 	 * @return the name
@@ -68,8 +116,6 @@ public class Stop {
 		this.longitude = longitude;
 	}
 	
-	
-	
 	/**
 	 * @return the address
 	 */
@@ -86,10 +132,8 @@ public class Stop {
 
 	@Override
 	public String toString() {
-		return new String(this.name+" "+this.latitude+" "+this.longitude);
-		
+		return "Stop [id=" + id + ", name=" + name + ", address=" + address + ", latitude=" + latitude + ", longitude="
+				+ longitude + "]";
 	}
-	
-	
 	
 }

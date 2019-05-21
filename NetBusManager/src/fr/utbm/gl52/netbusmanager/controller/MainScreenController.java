@@ -2,6 +2,7 @@ package fr.utbm.gl52.netbusmanager.controller;
 
 import java.io.IOException;
 
+import fr.utbm.gl52.netbusmanager.view.LineEditorView;
 import fr.utbm.gl52.netbusmanager.view.ScheduleEditorView;
 import fr.utbm.gl52.netbusmanager.view.StopEditorView;
 import javafx.fxml.FXML;
@@ -46,8 +47,13 @@ public class MainScreenController {
 	}
 	
 	@FXML 
-	public void openEditeurRouteButton() {
-		
+	public void openEditeurLineButton() {
+		try {
+			App.getStage().setScene(new LineEditorView(FXMLLoader.load(getClass().getResource("LineEditor.fxml"))));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML

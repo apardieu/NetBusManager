@@ -8,7 +8,7 @@
 	<VBox alignment="center" maxHeight="600" prefHeight="400" maxWidth="400" styleClass="mainscreen_root" spacing="15">
 		<Button fx:id="apercuButton"  text="Ouvrir l'aperçu du réseau" styleClass="mainscreen_button"></Button>
 		<Button fx:id="editeurStopButton" onAction="#openEditeurStop"  text="Gérer les arrêts" styleClass="mainscreen_button"></Button>
-		<Button fx:id="editeurRouteButton"  text="Gérer les lignes" styleClass="mainscreen_button"></Button>
+		<Button fx:id="editeurRouteButton"  text="Gérer les lignes" styleClass="mainscreen_button" onAction="#openEditeurLineButton"></Button>
 		<Button fx:id="editeurScheduleButton"  text="Gérer les tables de marche" styleClass="mainscreen_button" onAction="#openScheduleEditor"></Button>
 	</VBox>
 </VBox>

@@ -45,6 +45,9 @@ public class Line {
 		this.name = name;
 	}
 	
+	public void addStop(Stop stop) {
+		this.listOfStops.add(stop);
+	}
 	
 
 }

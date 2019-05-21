@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
+
+<GridPane fx:id="root" fx:controller="fr.utbm.gl52.netbusmanager.controller.LineEditorController" stylesheets="@line_editor.css" xmlns:fx="http://javafx.com/fxml/1 " vgap="10" hgap="15" >
+
+	<VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="5">
+		<VBox alignment="TOP_CENTER" ><Button fx:id="createLineButton" text="Ajouter une ligne" onAction="#openAddConfigurationMenu" ></Button></VBox>
+		<Button fx:id="modifyLineButton" text="Modifier une ligne existante" onAction="#openModifyConfigurationMenu"></Button>
+		<VBox alignment="TOP_CENTER"><Button fx:id="homeButton" text="Menu principal" onAction="#goBackToMainScreen" ></Button></VBox>
+	</VBox>
+	
+	
+	<VBox fx:id="lineSettingsVBox" GridPane.columnIndex="1" GridPane.rowIndex="0" visible="false">
+		<HBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+			<Label text="Numéro de la ligne :" ></Label>
+			<TextField fx:id="idLineTextField" ></TextField>
+		</HBox>
+		<HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+			<Label text="Nom de la ligne :" ></Label>
+			<TextField fx:id="nameLineTextField" ></TextField>
+		</HBox>
+		
+		<HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+			<VBox>
+				<Label text="Arrêts ajoutés"></Label>
+				<ListView fx:id="addedStopListView" ></ListView>	
+			</VBox>
+			<VBox alignment="CENTER" >
+				<Button fx:id="addStopToLineButton" text="+" styleClass="add_arrow_button" onAction="#addStopsFromAvailableToAdded"></Button>
+				<Button fx:id="removeStopFromLineButton" text="-" styleClass="remove_arrow_button" onAction="#addStopsFromAddedToAvailable"></Button>
+			</VBox>
+			<VBox spacing="3">
+				<Label text="Arrêts disponibles"></Label>
+				<ListView fx:id="availableStopListView" ></ListView>	
+				<TextField fx:id="searchStopTextField" promptText="Rechercher un arrêt ..."></TextField>
+			</VBox>
+		</HBox>
+		<HBox GridPane.columnIndex="1" GridPane.rowIndex="3" alignment="CENTER" spacing="10">
+			<Button fx:id="createButton" text="Créer la ligne" onAction="#createLineButtonHandler"></Button>
+			<Button fx:id="annulateButton" text="Annuler" onAction="#openAddConfigurationMenu" ></Button>
+		</HBox>	
+	</VBox>
+	
+	<VBox fx:id="modifyLineVBox" GridPane.columnIndex="1" GridPane.rowIndex="0" visible="false">
+	<Label text="Choisissez la ligne à modifier"></Label>
+	<ComboBox fx:id="chooseLineModifyComboBox"></ComboBox>
+	<HBox alignment="CENTER"><Button fx:id="modifyButton" text="Modifier la ligne" onAction="#modifyButtonHandler"></Button></HBox>	
+	
+	</VBox>
+	
+
+</GridPane>
+

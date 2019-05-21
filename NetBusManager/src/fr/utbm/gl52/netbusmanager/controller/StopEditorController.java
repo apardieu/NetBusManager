@@ -67,6 +67,8 @@ public class StopEditorController {
 	
 	public StopEditorController(){
 		this.model = new StopEditor();
+
+		
 	}
 	
 	
@@ -77,6 +79,7 @@ public class StopEditorController {
 	@FXML
 	public void addStopToDataBase(ActionEvent e) {
 		
+
 		stopNameTextField.setStyle("-fx-border-color : transparent");
 		longitudeTextField.setStyle("-fx-border-color : transparent");
 		lattitudeTextField.setStyle("-fx-border-color : transparent");
@@ -158,6 +161,7 @@ public class StopEditorController {
 	public void openAddConfigurationMenu(ActionEvent e) {
 		
 		//TODO à modifier en cas d'ajouts de commande ou de nécessité de nettoyer les champs lors de la fermeture
+
 		if(!this.addStopVBox.isVisible()) {
 			if(this.modifyStopVBox.isVisible())
 				this.modifyStopVBox.setVisible(false);

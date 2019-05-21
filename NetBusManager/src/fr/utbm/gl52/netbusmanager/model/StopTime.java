@@ -3,19 +3,81 @@
  */
 package fr.utbm.gl52.netbusmanager.model;
 
+import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * @author dbissari
  *
  */
-public class StopTime {
-
+@Entity
+public class StopTime implements Serializable {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@ManyToOne
+    @JoinColumn(name = "trip_id", nullable = false, referencedColumnName = "id")
 	private Trip trip;
+	
+	@ManyToOne
+    @JoinColumn(name = "stop_id", nullable = false, referencedColumnName = "id")
 	private Stop stop;
+	
+	@Column(nullable = false)
 	private Integer stopSequence;
+	
+	@Column(nullable = false)
+	@Temporal(TemporalType.TIME)
 	private Date arrivalTime;
+	
+	@Column(nullable = false)
+	@Temporal(TemporalType.TIME)
 	private Date departureTime;
+	
+	public StopTime() {
+		
+	}
+	
+	/**
+	 * @param trip the trip
+	 * @param stop the stop
+	 * @param stopSequence the stopSequence
+	 * @param arrivalTime the arrivalTime
+	 * @param departureTime the departureTime
+	 */
+	public StopTime(Trip trip, Stop stop, Integer stopSequence, Date arrivalTime, Date departureTime) {
+		this.trip = trip;
+		this.stop = stop;
+		this.stopSequence = stopSequence;
+		this.arrivalTime = arrivalTime;
+		this.departureTime = departureTime;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return this.id;
+	}
+	
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	
 	/**
 	 * @return the trip
@@ -85,6 +147,12 @@ public class StopTime {
 	 */
 	public void setDepartureTime(Date departureTime) {
 		this.departureTime = departureTime;
+	}
+
+	@Override
+	public String toString() {
+		return "StopTime [id=" + id + ", trip=" + trip + ", stop=" + stop + ", stopSequence=" + stopSequence
+				+ ", arrivalTime=" + arrivalTime + ", departureTime=" + departureTime + "]";
 	}
 	
 }

@@ -1,0 +1,18 @@
+
+
+.add_arrow_button{
+	-fx-shape:"M 4.54e-6,600.00002 703.12501,1068.75 l 0,-252.53904 496.87499,0 0,-432.42188 -496.87499,0 0,-252.53905 L 4.54e-6,600.00002 z";
+	-fx-background-color:green;
+	-fx-stroke:black;
+	-fx-text: "+"
+}
+
+.remove_arrow_button{
+	
+	
+	-fx-shape:"m 1200,600.00002 -703.12499,-468.75 0,252.53905 -496.87500546,0 0,432.42188 496.87500546,0 0,252.53905 L 1200,600.00002 z";
+	-fx-background-color:red;
+	-fx-stroke:black;
+	-fx-text:"-";
+	
+}
