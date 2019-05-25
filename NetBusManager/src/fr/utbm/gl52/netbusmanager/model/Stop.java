@@ -43,7 +43,7 @@ public class Stop implements Serializable {
 	 * @param latitude the latitude
 	 * @param longitude the longitude
 	 */
-	public Stop(String name, Double latitude, Double longitude) {
+	public Stop(String name, Double longitude, Double latitude) {
 		this.name = name;
 		this.latitude = latitude;
 		this.longitude = longitude;

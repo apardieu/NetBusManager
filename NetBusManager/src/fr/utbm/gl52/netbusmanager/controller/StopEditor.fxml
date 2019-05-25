@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ComboBox?>
+<?import fr.utbm.gl52.netbusmanager.graphicalcomponents.MapContainer?>
 
 <GridPane fx:id="root" fx:controller="fr.utbm.gl52.netbusmanager.controller.StopEditorController" xmlns:fx="http://javafx.com/fxml/1" >
 	<VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
@@ -29,8 +30,8 @@
 				<TextField fx:id="longitudeTextField"></TextField>
 			</VBox>
 				<VBox GridPane.columnIndex="2" GridPane.rowIndex="0" >
-				<Label text="Lattitude (*) :"></Label>
-				<TextField fx:id="lattitudeTextField"></TextField>
+				<Label text="Latitude (*) :"></Label>
+				<TextField fx:id="latitudeTextField"></TextField>
 			</VBox>
 			<VBox GridPane.columnIndex="0" GridPane.rowIndex="1" >
 				<Label text="Adresse : "></Label>
@@ -44,8 +45,10 @@
 			<Button fx:id="validateButton" onAction="#addStopToDataBase" text="Ajouter l'arrêt" GridPane.columnIndex="3" GridPane.rowIndex="2" ></Button>
 			<Label fx:id="informationAddLabel" style="-fx-text-fill:red" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" ></Label>
 			
+			
 		</GridPane>
 	</VBox>
+
 	
 	
 	

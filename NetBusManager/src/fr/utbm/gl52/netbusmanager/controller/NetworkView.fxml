@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+
+<VBox fx:id="root" fx:controller="fr.utbm.gl52.netbusmanager.controller.NetworkViewController" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
+
+	<HBox >
+		<VBox >
+			<Label text="Sélectionner un arrêt :"></Label>
+			<ComboBox fx:id="availableStopComboBox"></ComboBox>
+		</VBox>
+		<VBox >
+			<Label text="Sélectionner une ligne :"></Label>
+			<ComboBox fx:id="availableLineComboBox"></ComboBox>
+		</VBox>
+		<Label text="Cacher tous les arrêts : " ></Label>
+		<CheckBox fx:id="hideStopCheckBox"></CheckBox>
+		<Label text="Cacher toutes les lignes"></Label>
+		<CheckBox fx:id="hideLineCheckBox"></CheckBox>
+	</HBox>
+</VBox>
+

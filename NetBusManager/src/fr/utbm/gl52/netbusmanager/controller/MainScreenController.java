@@ -3,11 +3,11 @@ package fr.utbm.gl52.netbusmanager.controller;
 import java.io.IOException;
 
 import fr.utbm.gl52.netbusmanager.view.LineEditorView;
+import fr.utbm.gl52.netbusmanager.view.NetworkView;
 import fr.utbm.gl52.netbusmanager.view.ScheduleEditorView;
 import fr.utbm.gl52.netbusmanager.view.StopEditorView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
@@ -26,13 +26,7 @@ public class MainScreenController {
 	private Button editeurScheduleButton;
 	
 
-	@FXML
-	public void openApercu() {
-		
-		System.out.print("Trauvaux en cours");
-		
-	}
-	
+
 	@FXML 
 	public void openEditeurStop() {
 		
@@ -66,6 +60,17 @@ public class MainScreenController {
 			e.printStackTrace();
 		}
 		
+		
+	}
+	
+	@FXML
+	public void openNetworkView(){
+		try {
+			App.getStage().setScene(new NetworkView(FXMLLoader.load(getClass().getResource("NetworkView.fxml"))));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
