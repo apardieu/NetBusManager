@@ -12,9 +12,8 @@ import fr.utbm.gl52.netbusmanager.model.Line;
 import fr.utbm.gl52.netbusmanager.model.Stop;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
@@ -31,13 +30,19 @@ public class NetworkViewController implements Initializable  {
 	@FXML
 	private CheckBox hideLineCheckBox;
 	@FXML
-	private ComboBox<ComboBoxComponent> availableStopComboBox;
+	private ListView<ComboBoxComponent> availableStopListView;
 	@FXML
-	private ComboBox<ComboBoxComponent> availableLineComboBox;
-	
+	private ListView<ComboBoxComponent> availableLineListView;
+	@FXML
+	private Button homeButton;
 	
 	private ArrayList<Stop> stopList;
 	private ArrayList<Line> lineList;
+
+	
+	@FXML
+	private HBox mapContainerHBox;
+	
 	private MapContainer mapContainer;
 	
 	@Override
@@ -53,7 +58,7 @@ public class NetworkViewController implements Initializable  {
 		this.stopList.add(new Stop("stop3",500.0,400.0));
 		
 		try {
-			this.mapContainer = new MapContainer(Paths.get(this.getClass().getResource("testmap.png").toURI()).toFile(),this.stopList);
+			this.mapContainer = new MapContainer(Paths.get(this.getClass().getResource("testmap.png").toURI()).toFile(),null);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,31 +68,39 @@ public class NetworkViewController implements Initializable  {
 		for (Stop s : this.stopList) {
 			
 			StopCircle associatedStopCircle = this.mapContainer.addStopToMap(s);
-			this.availableStopComboBox.getItems().add(new ComboBoxComponent(s, associatedStopCircle));
+			this.availableStopListView.getItems().add(new ComboBoxComponent(s, associatedStopCircle));
 			
 		}
 		
 		
 
 		//Handler de la checkbox pour cacher tous les stops affichés sur la carte
-		this.hideStopCheckBox.setOnAction(e->{
-			if(this.hideStopCheckBox.isSelected()) {
-				for(ComboBoxComponent comp : this.availableStopComboBox.getItems()) {
-					comp.getAssociatedStopCircle().setVisible(false);
+		this.hideStopCheckBox.selectedProperty().addListener((obs,old,val)->{
+			if(val) {
+				for(ComboBoxComponent comp : this.availableStopListView.getItems()) {
+					comp.getAssociatedStopCircle().hideCircle(true);
+//					comp.getAssociatedStopCircle().setFill(Color.TRANSPARENT);
+
 				}
 			}else {
-				for(ComboBoxComponent comp : this.availableStopComboBox.getItems()) {
-					comp.getAssociatedStopCircle().setVisible(true);
+				for(ComboBoxComponent comp : this.availableStopListView.getItems()) {
+					comp.getAssociatedStopCircle().hideCircle(false);
 				}
 			}		
 		});
 		
 		
 		//Faire la même chose pour les lignes
-		this.root.getChildren().add(this.mapContainer);
+		
+		
+		this.mapContainerHBox.getChildren().add(this.mapContainer);
 				
 	}
 	
+	@FXML
+	public void goBackToMainScreen() {
+		App.getStage().setScene(App.getMainScene());
+	}
 	
 	public NetworkViewController() {
 	
@@ -108,24 +121,27 @@ public class NetworkViewController implements Initializable  {
 		public ComboBoxComponent(Stop stop,StopCircle stopCircle) {
 			super();
 			this.checkBox = new CheckBox();
+			this.checkBox.setDisable(false);
 			this.associatedStop = stop;
 			this.associatedStopCircle = stopCircle;
+			this.associatedStopCircle.setSelectableProperty(true);
+			
 			this.nameLabel = new Label(this.associatedStop.getName());
 			this.getChildren().addAll(checkBox,nameLabel);
 			
 			
 			Tooltip.install(this, new Tooltip(this.associatedStop.toString()));
 			
-			this.associatedStopCircle.setOnMouseClicked(e->{
-				
-				//Faire le handler quand on clique sur le stop ça set son style avec une bordercolor et une strokewidt et ça affiche son nom dans le label selectedStopLabel
-				
-				
-				
+			
+			this.checkBox.selectedProperty().addListener((obs,old,val)->{
+				if(val) {
+					if(this.associatedStop!=null) {
+						this.associatedStopCircle.setSelected(true);
+					}
+				}else {
+					this.associatedStopCircle.setSelected(false);	
+				}
 			});
-			
-			
-			
 
 		}
 		
@@ -175,7 +191,7 @@ public class NetworkViewController implements Initializable  {
 		}
 		
 		
-		
+
 
 			
 		}

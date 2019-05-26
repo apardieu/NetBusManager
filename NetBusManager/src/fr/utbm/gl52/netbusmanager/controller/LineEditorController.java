@@ -3,26 +3,32 @@
  */
 package fr.utbm.gl52.netbusmanager.controller;
 
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import fr.utbm.gl52.netbusmanager.graphicalcomponents.MapContainer;
+import fr.utbm.gl52.netbusmanager.graphicalcomponents.StopCircle;
 import fr.utbm.gl52.netbusmanager.model.Line;
 import fr.utbm.gl52.netbusmanager.model.Stop;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -63,12 +69,18 @@ public class LineEditorController implements Initializable {
 	
 	
 	
+	
+	
 	@FXML
 	private VBox lineSettingsVBox;
 	@FXML 
 	private TextField idLineTextField;
 	@FXML
 	private TextField nameLineTextField;
+	@FXML
+	private ColorPicker lineColorPicker;
+	@FXML
+	private VBox mapContainerVBox;
 	@FXML
 	public ListView<ListViewLineComponent> addedStopListView;
 	@FXML
@@ -88,16 +100,15 @@ public class LineEditorController implements Initializable {
 	
 	
 	//TODO A supprimer une fois que la récupération des stops dans la classe depuis la BDD est faite, je l'utilise juste pour faire des tests pour l'instant
-	public ArrayList<Stop> tmpListOfStop;
+	private ArrayList<Stop> tmpListOfStop;
 	
-	public boolean modifyLine=false;
-	public Line lineToModify;
-	
+	private boolean modifyLine=false;
+	private Line lineToModify;
+	private MapContainer mapContainer; 
 	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
 		
 		
 		//Permet l'update de la table des arrêts disponible lors de la saisie d'un nouveau caractère dans la barre 
@@ -112,23 +123,42 @@ public class LineEditorController implements Initializable {
 		});
 		
 		
+		
 		//Permet de créer un TextField qui ne va prendre que des chiffres en entrée
 		this.idLineTextField.textProperty().addListener((obs,old,val)->{
 			if(!val.matches("\\d*"))
 				this.idLineTextField.setText(old);
 		});
+		
+		
+		this.lineColorPicker.valueProperty().addListener((obs,old,val)->{
+			this.mapContainer.getCurrendDrawedLine().setStroke(val);
+		});
+
 	}
 	
 	public LineEditorController() {
 		
-		//A supprimer de la
+		//TODO supprimer la TMP list of stop pour remplacer par la liste des stops dispo issus de la base de données 
 		
 		this.tmpListOfStop = new ArrayList<Stop>();
-		this.tmpListOfStop.add(new Stop("Abc", 0.0, 0.0));
-		this.tmpListOfStop.add(new Stop("Adc", 0.0, 0.0));
-		this.tmpListOfStop.add(new Stop("gfff", 0.0, 0.0));
+		this.tmpListOfStop.add(new Stop("Abc", 100.0, 100.0));
+		this.tmpListOfStop.add(new Stop("Adc", 200.0, 200.0));
+		this.tmpListOfStop.add(new Stop("gfff", 300.0, 200.0));
 		
-		//à la une fois que la récupération des stops depuis la BDD fonctionne
+		
+		try {
+			this.mapContainer = new MapContainer(Paths.get(this.getClass().getResource("testmap.png").toURI()).toFile(),null);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.mapContainer.setDrawLineProperty(true);
+		
+
+
+		
 		
 
 	}
@@ -142,12 +172,18 @@ public class LineEditorController implements Initializable {
 		public CheckBox checkBox;
 		public Label stopName;
 		public Stop associatedStop;
+		public StopCircle associatedStopCircle;
+		
+		
 		
 		public ListViewLineComponent(Stop stop) {
 			super();
 			this.checkBox = new CheckBox();
 			this.associatedStop = stop;
 			this.stopName = new Label(this.associatedStop.getName());
+			this.associatedStopCircle = new StopCircle(associatedStop);
+			
+			mapContainer.getChildren().add(this.associatedStopCircle);
 			this.getChildren().addAll(checkBox,stopName);
 			
 			
@@ -169,6 +205,8 @@ public class LineEditorController implements Initializable {
 				this.stopName.setTextFill(Color.BLACK);
 			});
 			
+			
+			Bindings.bindBidirectional(this.checkBox.selectedProperty(), this.associatedStopCircle.selectedPropertyProperty());
 
 			
 		}
@@ -193,6 +231,20 @@ public class LineEditorController implements Initializable {
 		public void setAssociatedStop(Stop associatedStop) {
 			this.associatedStop = associatedStop;
 		}
+
+
+
+		public StopCircle getAssociatedStopCircle() {
+			return associatedStopCircle;
+		}
+
+
+
+		public void setAssociatedStopCircle(StopCircle associatedStopCircle) {
+			this.associatedStopCircle = associatedStopCircle;
+		}
+		
+		
 		
 		
 		
@@ -204,6 +256,9 @@ public class LineEditorController implements Initializable {
 	 */
 	@FXML
 	public void openAddConfigurationMenu() {
+		this.mapContainer.visibleProperty().bind(this.lineSettingsVBox.visibleProperty());
+		this.mapContainer.getCurrendDrawedLine().fillProperty().bind(this.lineColorPicker.valueProperty());
+
 			
 
 		
@@ -233,6 +288,7 @@ public class LineEditorController implements Initializable {
 			
 			
 			addAllAvailableStopsToListView(availableStops);
+			this.mapContainerVBox.getChildren().add(mapContainer);
 		}else {
 			clearAddLineField();
 			this.lineSettingsVBox.setVisible(false);
@@ -274,6 +330,8 @@ public class LineEditorController implements Initializable {
 		
 		for(Stop s : stopList) {
 			ListViewLineComponent newViewComponent = new ListViewLineComponent(s);
+			newViewComponent.getAssociatedStopCircle().setSelectableProperty(true);
+			
 			this.availableStopListView.getItems().add(newViewComponent);
 		}
 		//TODO

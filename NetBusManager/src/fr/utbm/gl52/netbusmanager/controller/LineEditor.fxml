@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ColorPicker?>
 
 <GridPane fx:id="root" fx:controller="fr.utbm.gl52.netbusmanager.controller.LineEditorController" stylesheets="@line_editor.css" xmlns:fx="http://javafx.com/fxml/1 " vgap="10" hgap="15" >
 
@@ -27,8 +28,14 @@
 			<Label text="Nom de la ligne :" ></Label>
 			<TextField fx:id="nameLineTextField" ></TextField>
 		</HBox>
-		
 		<HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+			<Label text="Couleur de la ligne : "></Label>
+			<ColorPicker fx:id="lineColorPicker"></ColorPicker>
+		
+		
+		</HBox>
+		
+		<HBox fx:id="viewHBox" GridPane.columnIndex="1" GridPane.rowIndex="2">
 			<VBox>
 				<Label text="Arrêts ajoutés"></Label>
 				<ListView fx:id="addedStopListView" ></ListView>	
@@ -41,6 +48,9 @@
 				<Label text="Arrêts disponibles"></Label>
 				<ListView fx:id="availableStopListView" ></ListView>	
 				<TextField fx:id="searchStopTextField" promptText="Rechercher un arrêt ..."></TextField>
+			</VBox>
+			<VBox fx:id="mapContainerVBox">
+			<Label text="Utiliser le clic gauche pour tracer la ligne et le clic droit pour effacer le dernier trait tracé"></Label>
 			</VBox>
 		</HBox>
 		<HBox GridPane.columnIndex="1" GridPane.rowIndex="3" alignment="CENTER" spacing="10">

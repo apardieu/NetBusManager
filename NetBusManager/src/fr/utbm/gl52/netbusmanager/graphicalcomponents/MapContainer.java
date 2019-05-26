@@ -8,10 +8,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+
 import fr.utbm.gl52.netbusmanager.model.Stop;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
@@ -25,13 +28,18 @@ public class MapContainer extends Pane {
 	
 	private File mapFile;
 	private ImageView mapImageView;
-	private ArrayList<Circle> stopRepresentations = new ArrayList<>();
+	private ArrayList<StopCircle> stopRepresentations = new ArrayList<>();
 	private ArrayList<Polyline> lineRepresentations = new ArrayList<>();
 	
 	
 	private SimpleBooleanProperty drawStopProperty = new SimpleBooleanProperty();
 	private SimpleBooleanProperty drawLineProperty = new SimpleBooleanProperty();
 	
+	
+	
+	
+	private ArrayList<Point2D> drawingPointsCurrentLine = new ArrayList<>();
+	private Polyline currendDrawedLine = new Polyline();
 	private StopCircle currentDrawedStopCircle;
 	
 	
@@ -39,7 +47,6 @@ public class MapContainer extends Pane {
 		super();
 		
 		
-		//TODO Changer pour mettre la taille souhaitée, aka taille de l'image de la map
 		
 		
 		this.setPrefSize(800, 800);
@@ -63,23 +70,38 @@ public class MapContainer extends Pane {
 		
 		this.getChildren().add(this.currentDrawedStopCircle);
 		
-		
-		
-		
 		this.setOnKeyPressed(e->{
+			
 			
 		});
 		
 		
+		
+		this.setOnKeyPressed(e->{
+			System.out.println("Keypressed in mapcontainer");
+			
+			if(e.getCode().equals(KeyCode.DELETE)) {
+				System.out.println("test delete");
+				updateCurrentLineDrawing(this.drawingPointsCurrentLine.get(this.drawingPointsCurrentLine.size()), false);
+			}
+			
+		});
 		this.setOnMousePressed(e->{
 
 			if(drawStopProperty.get()) {
 				moveCurrentDrawnedStopCircle(e.getX(), e.getY());
 			}
+			
+			if(drawLineProperty.get()) {
+				if(e.isPrimaryButtonDown())
+					updateCurrentLineDrawing(new Point2D(e.getX(),e.getY()), true);
+				if(e.isSecondaryButtonDown())
+					updateCurrentLineDrawing(this.drawingPointsCurrentLine.get(this.drawingPointsCurrentLine.size()-1), false);
+
+				
+			}
 	
 		});
-		
-		
 		
 	}
 	
@@ -88,6 +110,30 @@ public class MapContainer extends Pane {
 		this.currentDrawedStopCircle.setVisible(true);
 		this.currentDrawedStopCircle.setCenterX(x);
 		this.currentDrawedStopCircle.setCenterY(y);
+	}
+	
+	
+	
+	
+	public void updateCurrentLineDrawing(Point2D point,boolean add) {
+		
+		this.currendDrawedLine.setVisible(false);
+		this.getChildren().remove(this.currendDrawedLine);
+		this.currendDrawedLine = new Polyline();
+
+		this.currendDrawedLine.setStrokeWidth(4);
+		
+		if(add)
+			this.drawingPointsCurrentLine.add(point);
+		else
+			if(!this.drawingPointsCurrentLine.isEmpty())
+				this.drawingPointsCurrentLine.remove(this.drawingPointsCurrentLine.size()-1);
+		
+		for(Point2D p : this.drawingPointsCurrentLine )
+			this.currendDrawedLine.getPoints().addAll(p.getX(),p.getY());
+		
+		this.getChildren().add(this.currendDrawedLine);
+
 	}
 	
 	
@@ -107,6 +153,13 @@ public class MapContainer extends Pane {
 		
 		
 	}
+	
+	public void makeAllStopSelectable() {
+		for(StopCircle s : this.stopRepresentations) {
+			s.setSelectableProperty(true);
+		}
+	}
+	
 	
 	
 	public File getMapFile() {
@@ -129,12 +182,12 @@ public class MapContainer extends Pane {
 	}
 
 
-	public ArrayList<Circle> getStopRepresentations() {
+	public ArrayList<StopCircle> getStopRepresentations() {
 		return stopRepresentations;
 	}
 
 
-	public void setStopRepresentations(ArrayList<Circle> stopRepresentations) {
+	public void setStopRepresentations(ArrayList<StopCircle> stopRepresentations) {
 		this.stopRepresentations = stopRepresentations;
 	}
 
@@ -204,6 +257,17 @@ public class MapContainer extends Pane {
 	public final void setDrawLineProperty(final boolean drawLineProperty) {
 		this.drawLinePropertyProperty().set(drawLineProperty);
 	}
+
+
+	public Polyline getCurrendDrawedLine() {
+		return currendDrawedLine;
+	}
+
+
+	public void setCurrendDrawedLine(Polyline currendDrawedLine) {
+		this.currendDrawedLine = currendDrawedLine;
+	}
+	
 	
 	
 
